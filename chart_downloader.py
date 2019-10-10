@@ -10,7 +10,66 @@ import json
 #musicnamecode = '106'
 #pyinstaller --onefile  getmusicscore.py
 
-musicnamecode2 = input("write code")
+def custom_score(mcode):
+    songinfo = requests.get('https://bestdori.com/api/post/details?id=' + mcode).json()
+
+
+
+    if not os.path.isfile('data/music/bgm'+mcode+'.mp3'):
+        f5 = open('data/music/bgm'+mcode+'.mp3','wb')
+        mp3down = requests.get(songinfo['post']['song']['audio'])
+        f5.write(mp3down.content)
+        f5.close()
+
+    notedata = songinfo['post']['notes']
+    #print(notedata)
+
+    fw = open("data/score/" + mcode + "ex.txt", 'w')
+
+    fw.write('46\n'+str('111'))
+    fw.write('\n0/0/0')
+
+    for note in notedata:
+
+        print(note)
+        b = str(note['beat'])
+        if note['type'] == 'System' and note['cmd'] == 'BPM':
+            fw.write('\n'+ b + '/20/' + str(note['bpm']))
+            continue
+        if note['type'] != 'Note':
+            continue
+
+        if 'flick' in note:
+            if note['note'] == 'Single': t = '/2/'
+            if note['note'] == 'Slide':
+                if note['pos'] == 'A':
+                    t = '/12/'
+                else:
+                    t = '/13/'
+        else:
+            if note['note'] == 'Single': t = '/1/'
+            if note['note'] == 'Slide':
+                if 'end' in note:
+                    if note['pos'] == 'A':
+                        t = '/5/'
+                    else:   #B
+                        t = '/8/'
+                else:
+                    if note['pos'] == 'A':
+                        t = '/4/'
+                    else:   #B
+                        t = '/7/'
+
+        fw.write('\n' + b + t + str(note['lane']))
+    fw.close()
+    return
+
+
+musicnamecode2 = input("write code: ")
+
+if 'bestdori' in musicnamecode2:
+    custom_score(musicnamecode2.replace('bestdori ',''))
+    quit(0)
 
 musicnamecode = musicnamecode2[0:3]
 
