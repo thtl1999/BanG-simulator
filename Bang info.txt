@@ -1,0 +1,169 @@
+BanG! simulator 1.11
+
+music name = bgm[musicnamecode].ogg
+score name = [musicnamecode]ex.txt
+
+
+if you want to play special score, you have to follow
+xxxsp.txt (for score name)
+xxx+		(type 3digit number and +)
+
+
+you can download song score(music chart) by chart downloader
+type 3digit number then it will download bms file and convert it
+look https://bandori.ga/#/music/jp for music code
+
+if you want to modify bms file, just type same name.
+when your bms file is already exist, program will not download but only convert
+
+for special score, add + after 3 digit number
+
+you can create your chart on bestdori https://bestdori.com/community/charts/new
+and you can convert bestdori chart with post number
+in chart downloader,
+write code: bestdori xxxx
+to get music and chart
+
+************HOW TO USE***********
+SPACE to start
+F4 to FULLSCREEN mode
+record screen R (press before pressing space) (you may need x264vfw codec)
+*********************************
+[Effect]
+effect image can be downloaded https://www.dropbox.com/s/r4txv83xdxar3xs/effect.zip?dl=0
+image by @FstyleArmy
+
+in effect folder, there are 3 folders normal, flick and slide
+put png files here and write center position in setting.ini
+since images are should be in ram, too large or too many images can cause crash
+this is for performance. if you need, please contact me.
+
+
+[score explaining]
+
+beat/notetype/lanenumber
+
+note type
+
+0 music
+1 normal
+2 flick
+3 slide a start
+4 slide a among
+5 slide a end
+6 slide b start
+7 slide b among
+8 slide b end
+9 long longendbeat lanenumber <- do not use this. no longer support
+10 fever single
+11 skill
+12 slide a end flick
+13 slide b end flick
+14 long note with flick
+ex) 66/14/68/5
+20 bpm change
+ex) 5/20/160		<- change bpm at beat 5 to bpm 160
+
+new long note type
+21 long note start
+25 long note end
+26 long note end with flick
+
+
+1.offset
+2.bpm
+3.notes
+....
+....
+
+ex)
+46		<- note offset
+131		<- song bpm
+0/0/0		<- music start at beat 0
+8/1/3		<- normal note at beat 8 on 3rd lane
+8.5/1/6		<- normal note at beat 8.5 on 6th lane
+8.75/1/6
+9.25/1/1
+10/1/6
+10.25/1/6
+10.75/1/1
+
+
+setting.ini explaining
+
+[Coord]
+Topx=622		<- top x value
+Topdistance=6		<- distance between lanes
+Topy=20			<- top y value
+Botx=197		
+Botdistance=147
+Boty=589
+[Display]
+Windowx=1280		<- window width
+Windowy=720		<- window height
+Notesize=70		<- size of note %
+Notespeed=6		<- note speed
+FPS=60			<- frequency of your monitor. usually 60hz
+[Music]
+Sevol=40		<- sound effect volume
+Musicvol=100		<- music volume
+Offset=50		<- music offset
+[Settings]
+Color=1			<- color change when note is not divided by 0.5
+Sameline=1		<- if two notes are in same timing, make a line (not support old longnote 9)
+
+[Effect]		<- effect config
+EffectEnable=1		<- if 0, no effect. if 1, enable image based effect
+Size=1.0		<- effect image size multiplier
+Normalx=300		<- center position of x in normal effect image
+Normaly=589		<- y
+Flickx=300		<- flick x
+Flicky=589		<- flick y
+Slidex=200
+Slidey=589
+Amongx=300		<- does not use for now
+Amongy=589		<- does not use for now
+
+
+note sprite and music score resources from https://github.com/BandoriDatabase/bangdream-data-viewer
+default scoreoffset is 46 and ini offset is 46 (previous was 50)
+
+
+
+
+
+
+change log
+
+beta - first release
+beta2 - changed note movement
+beta3 - fixed slide note connection movement
+beta4 - optimization and fixed slide bug (sudden moving in end line)
+beta5 - bugs fixed, chart downloader and chart converter program added
+	new type of longnote added
+beta6 - apply new audio method. now support mp3 files and sync improvement
+	added to setting: FPS, Color, Sameline
+	background file can be edited
+	can change FPS
+beta7 - moving arrow added on flick note
+	every note depth is lower than slide
+	gray color note support (if beat can not be divided by 0.5, become gray)
+	press space to start the song. now you can move window before music starts
+	when two notes are in same timing, make a line.(notes should be sequentially ordered)
+beta7a-	music offset adjust
+	line is now under the note sprite
+beta7b- chart convertor support more types
+	now support resolution change
+beta8 - special score support
+	now incorrect bms files can be converted since offical one is incorrect
+	changed database domain to bandori.ga
+beta8a- bangdream api update
+	video record function (for frame perfect video)(not finished)
+beta8c- video record function
+	font changed
+beta8d- chart fix like bgm153 (chartdownloader update)
+beta9 - added effect function (Thanks to @FstyleArmy). chart fix bgm054
+
+1.01 - bgm177 musicscore fixed (added exceptions)
+1.1 - bestdori custom chart support
+1.11 - full automated video recording
