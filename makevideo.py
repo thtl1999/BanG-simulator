@@ -43,7 +43,7 @@ musiccode = input('Write 3 digit number: ')
 notes, music_offset = get_notes(musiccode)
 print(notes)
 
-default_offset = 360
+default_offset = 332
 music_vol = 0
 se_vol = -5
 master_vol = 0
