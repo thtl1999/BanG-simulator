@@ -170,4 +170,4 @@ beta9 - added effect function (Thanks to @FstyleArmy). chart fix bgm054
 1.1 - bestdori custom chart support
 1.11 - full automated video recording
 
-1.20 (by qq1010903229) - score display, gray note support and CN server font
+1.20 (by qq1010903229) - score display, gray note support rewrite and CN server font
