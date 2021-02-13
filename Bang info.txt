@@ -1,4 +1,4 @@
-BanG! simulator 1.11
+BanG! simulator 1.20
 
 music name = bgm[musicnamecode].ogg
 score name = [musicnamecode]ex.txt
@@ -6,7 +6,7 @@ score name = [musicnamecode]ex.txt
 
 if you want to play special score, you have to follow
 xxxsp.txt (for score name)
-xxx+		(type 3digit number and +)
+xxx+		(type any number and +)
 
 
 you can download song score(music chart) by chart downloader
@@ -28,6 +28,7 @@ to get music and chart
 SPACE to start
 F4 to FULLSCREEN mode
 record screen R (press before pressing space) (you may need x264vfw codec)
+stop record S
 *********************************
 [Effect]
 effect image can be downloaded https://www.dropbox.com/s/r4txv83xdxar3xs/effect.zip?dl=0
@@ -99,11 +100,12 @@ Botx=197
 Botdistance=147
 Boty=589
 [Display]
-Windowx=1280		<- window width
-Windowy=720		<- window height
+Windowx=1280		<- window width (please always set to 1280)
+Windowy=720		<- window height (please always set to 720)
 Notesize=70		<- size of note %
 Notespeed=6		<- note speed
 FPS=60			<- frequency of your monitor. usually 60hz
+Graynote=0              <- (1.20 updated) if 0, disable turning offbeat note to gray.  if 1, enable turning offbeat note to gray. 
 [Music]
 Sevol=40		<- sound effect volume
 Musicvol=100		<- music volume
@@ -167,3 +169,4 @@ beta9 - added effect function (Thanks to @FstyleArmy). chart fix bgm054
 1.01 - bgm177 musicscore fixed (added exceptions)
 1.1 - bestdori custom chart support
 1.11 - full automated video recording
+1.20 - gray note support
