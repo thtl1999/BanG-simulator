@@ -1,4 +1,4 @@
-BanG! simulator 1.20
+BanG! simulator 1.30
 
 music name = bgm[musicnamecode].ogg
 score name = [musicnamecode]ex.txt
@@ -55,13 +55,10 @@ note type
 6 slide b start
 7 slide b among
 8 slide b end
-9 long longendbeat lanenumber <- do not use this. no longer support
 10 fever single
 11 skill
 12 slide a end flick
 13 slide b end flick
-14 long note with flick
-ex) 66/14/68/5
 20 bpm change
 ex) 5/20/160		<- change bpm at beat 5 to bpm 160
 
@@ -69,6 +66,14 @@ new long note type
 21 long note start
 25 long note end
 26 long note end with flick
+
+new note types in version 1.30
+31 long note start with skill
+32 long note end with skill
+33 slide a start with skill
+34 slide a end with skill
+35 slide b start with skill
+36 slide b end with skill
 
 
 1.offset
@@ -102,21 +107,21 @@ Boty=589
 [Display]
 Windowx=1280		<- window width (please always set to 1280)
 Windowy=720		<- window height (please always set to 720)
-Notesize=70		<- size of note %
+Notesize=72		<- size of note %
 Notespeed=6		<- note speed
-FPS=60			<- frequency of your monitor. usually 60hz
-Graynote=0              <- (1.20 updated) if 0, disable turning offbeat note to gray.  if 1, enable turning offbeat note to gray. 
+FPS=60			<- frequency of your monitor. usually 60hz 
 [Music]
 Sevol=40		<- sound effect volume
 Musicvol=100		<- music volume
 Offset=50		<- music offset
 [Settings]
-Color=1			<- color change when note is not divided by 0.5
+Color=1			<- (1.30 update) color change when note is not multiplied by GrayNoteMultiplier
+GrayNoteMultiplier=2    <- (1.30 update)
 Sameline=1		<- if two notes are in same timing, make a line (not support old longnote 9)
 
 [Effect]		<- effect config
 EffectEnable=1		<- if 0, no effect. if 1, enable image based effect
-Size=1.0		<- effect image size multiplier
+Size=0.72		<- effect image size multiplier
 Normalx=300		<- center position of x in normal effect image
 Normaly=589		<- y
 Flickx=300		<- flick x
@@ -170,4 +175,5 @@ beta9 - added effect function (Thanks to @FstyleArmy). chart fix bgm054
 1.1 - bestdori custom chart support
 1.11 - full automated video recording
 
-1.20 (by qq1010903229) - score display, gray note support rewrite and CN server font
+1.20 (by qq1010903229) - score display, gray color note support rewrite and CN server font
+1.30 (by qq1010903229) - new note types (chart downloader is not updated)
