@@ -234,6 +234,9 @@ while True:
             if isitlongline == True:                        #long note indicate
                 note[noteindex]['notetype'] = 'long'
 
+            if lanestring[0] == '3':
+                note[noteindex]['notetype'] = 'hidden'
+
             noteindex += 1                              # if note exist, index++
 
 
@@ -305,6 +308,30 @@ while True:
                     note[i]['noteproperty'] = 'fever'
                     note[i]['notetype'] = 'longflick'
 
+        elif note[i]['notetype'] == 'hidden':     #hidden
+                if se[note[i]['notese']] == 'slide_a.wav':
+                    note[i]['noteproperty'] = 'none'
+                    note[i]['notetype'] = 'slideahidden'
+                if se[note[i]['notese']] == 'slide_b.wav':
+                    note[i]['noteproperty'] = 'none'
+                    note[i]['notetype'] = 'slidebhidden'
+                if se[note[i]['notese']].startswith('slide_a_LS'):
+                    note[i]['notelane'] -= float(se[note[i]['notese']][10:12])/100.0
+                    note[i]['noteproperty'] = 'none'
+                    note[i]['notetype'] = 'slideahidden'
+                if se[note[i]['notese']].startswith('slide_a_RS'):
+                    note[i]['notelane'] += float(se[note[i]['notese']][10:12])/100.0
+                    note[i]['noteproperty'] = 'none'
+                    note[i]['notetype'] = 'slideahidden'
+                if se[note[i]['notese']].startswith('slide_b_LS'):
+                    note[i]['notelane'] -= float(se[note[i]['notese']][10:12])/100.0
+                    note[i]['noteproperty'] = 'none'
+                    note[i]['notetype'] = 'slidebhidden'
+                if se[note[i]['notese']].startswith('slide_b_RS'):
+                    note[i]['notelane'] += float(se[note[i]['notese']][10:12])/100.0
+                    note[i]['noteproperty'] = 'none'
+                    note[i]['notetype'] = 'slidebhidden'
+
         else:                                   #normal, flick, slide
             if se[note[i]['notese']] == 'bd.wav':
                 note[i]['noteproperty'] = 'none'
@@ -360,6 +387,12 @@ while True:
             if se[note[i]['notese']] == 'fever_note_slide_b.wav': #special case like music 054
                 note[i]['noteproperty'] = 'fever'
                 note[i]['notetype'] = 'slideb'
+            if se[note[i]['notese']] == 'directional_fl_l.wav':
+                note[i]['noteproperty'] = 'none'
+                note[i]['notetype'] = 'directional_fl_l'
+            if se[note[i]['notese']] == 'directional_fl_r.wav':
+                note[i]['noteproperty'] = 'none'
+                note[i]['notetype'] = 'directional_fl_r'
 
         print(note[i])
 
@@ -375,14 +408,16 @@ for i in range(len(sortednote) - 1):
                 sortednote[i], sortednote[i+1] = sortednote[i+1], sortednote[i]
                 print('!!!! special sort')
 
-
-
 #print(sortednote)
 
 #calculate timing
 bitsec = 60/bpm
 savedtiming = 0
 savedbeat = 0
+dfllt=-1
+dflrt=-1
+dfll=[0,0,0,0,0,0,0,0]
+dflr=[0,0,0,0,0,0,0,0]
 for i in range(len(sortednote)):
     sortednote[i]['notebeat'] *= 4
     print(sortednote[i])
@@ -396,8 +431,38 @@ for i in range(len(sortednote)):
 
 if True:    #convert to my simulator
     fw.write('46\n'+str(bpm))
-
+    
     for i in range(len(sortednote)):
+        if dfllt != -1 and dfllt < sortednote[i]['notebeat']:
+            print('dfll:', dfll);
+            dfllts = str(dfllt)
+            width = 0
+            for k in range(1,8):
+                if dfll[k]:
+                    width = width + 1
+                elif width:
+                    fw.write('\n'+ dfllts + '/' + str(50+width) + '/' + str(k-1))
+                    width = 0
+                dfll[k]=0
+            if width:
+                fw.write('\n'+ dfllts + '/' + str(50+width) + '/7')
+                width = 0
+            dfllt = -1
+        if dflrt != -1 and dflrt < sortednote[i]['notebeat']:
+            print('dflr:', dflr);
+            dflrts = str(dflrt)
+            width = 0
+            for k in range(1,8):
+                if dflr[k]:
+                    width = width + 1
+                elif width:
+                    fw.write('\n'+ dflrts + '/' + str(60+width) + '/' + str(k-width))
+                    width = 0
+                dflr[k]=0
+            if width:
+                fw.write('\n'+ dflrts + '/' + str(60+width) + '/' + str(8-width))
+                width = 0
+            dflrt = -1
         b = str(sortednote[i]['notebeat'])
         if sortednote[i]['noteproperty'] == 'bgm':
             fw.write('\n0/0/0')
@@ -410,12 +475,18 @@ if True:    #convert to my simulator
 
         if sortednote[i]['notetype'] == 'normal':
             t = '/1/'
+            if sortednote[i]['noteproperty'] == 'skill':
+             t = '/11/'
         if sortednote[i]['notetype'] == 'flick':
             t = '/2/'
         if sortednote[i]['notetype'] == 'longstart':
             t = '/21/'
+            if sortednote[i]['noteproperty'] == 'skill':
+             t = '/31/'
         if sortednote[i]['notetype'] == 'longend':
             t = '/25/'
+            if sortednote[i]['noteproperty'] == 'skill':
+             t = '/32/'
         if sortednote[i]['notetype'] == 'longflick':
             t = '/26/'
         if sortednote[i]['notetype'] == 'slidea':
@@ -424,16 +495,57 @@ if True:    #convert to my simulator
             t = '/5/'
         if sortednote[i]['notetype'] == 'slideaendflick':
             t = '/12/'
+        if sortednote[i]['notetype'] == 'slideahidden':
+            t = '/41/'
         if sortednote[i]['notetype'] == 'slideb':
             t = '/7/'
         if sortednote[i]['notetype'] == 'slidebend':
             t = '/8/'
         if sortednote[i]['notetype'] == 'slidebendflick':
             t = '/13/'
-
+        if sortednote[i]['notetype'] == 'slidebhidden':
+            t = '/42/'
+        if sortednote[i]['notetype'] == 'directional_fl_l':
+            dfllt = sortednote[i]['notebeat']
+            dfll[sortednote[i]['notelane']] = 1
+            print('dfll:', dfll);
+            continue
+        if sortednote[i]['notetype'] == 'directional_fl_r':
+            dflrt = sortednote[i]['notebeat']
+            dflr[sortednote[i]['notelane']] = 1
+            print('dflr:', dflr);
+            continue
         fw.write('\n' + b + t + str(sortednote[i]['notelane']))
-
-
+    if dfllt != -1:
+        print('dfll:', dfll);
+        dfllts = str(dfllt)
+        width = 0
+        for k in range(1,8):
+            if dfll[k]:
+                width = width + 1
+            elif width:
+                fw.write('\n'+ dfllts + '/' + str(50+width) + '/' + str(k-1))
+                width = 0
+            dfll[k]=0
+        if width:
+            fw.write('\n'+ dfllts + '/' + str(50+width) + '/7')
+            width = 0
+        dfllt = -1
+    if dflrt != -1:
+        print('dflr:', dflr);
+        dflrts = str(dflrt)
+        width = 0
+        for k in range(1,8):
+            if dflr[k]:
+                width = width + 1
+            elif width:
+                fw.write('\n'+ dflrts + '/' + str(60+width) + '/' + str(k-width))
+                width = 0
+            dflr[k]=0
+        if width:
+            fw.write('\n'+ dflrts + '/' + str(60+width) + '/' + str(8-width))
+            width = 0
+        dflrt = -1
 
 
 fr.close()
@@ -441,4 +553,3 @@ fw.close()
 
 if errorinbms == 1:
     print("error in bms")
-
