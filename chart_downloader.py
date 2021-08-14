@@ -63,7 +63,7 @@ def custom_score(mcode):
         fw.write('\n' + b + t + str(note['lane']))
     fw.close()
     return
-
+print("chart downloader is deprecated, use https://qq1010903229.github.io/BanGConverter instead")
 
 musicnamecode2 = input("write code: ")
 
